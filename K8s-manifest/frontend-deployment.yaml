@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: chat-app
+spec:
+  selector:
+    matchLabels:
+      app: frontend-selec
+  template:
+    metadata:
+      labels:
+        app: frontend-selec
+    spec:
+      containers:
+      - name: frontend-container
+        image: krishna026/chat-app-frontend-image
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        env:
+        - name: NODE_ENV
+          value: "production"

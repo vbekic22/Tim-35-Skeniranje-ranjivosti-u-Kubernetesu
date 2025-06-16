@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  namespace: chat-app
+spec:
+  selector:
+    matchLabels:
+      app: mongodb-selec
+  template:
+    metadata:
+      labels:
+        app: mongodb-selec
+    spec:
+      containers:
+      - name: myapp
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "admin"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "root"
+        volumeMounts:                      # ✅ correct place
+        - mountPath: "/mnt/data"
+          name: mongo-pv
+      volumes:                            # ✅ must be here, inside template.spec
+      - name: mongo-pv
+        persistentVolumeClaim:
+          claimName: mongo-pvc
