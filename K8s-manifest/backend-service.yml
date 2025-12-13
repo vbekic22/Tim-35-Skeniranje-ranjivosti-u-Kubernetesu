@@ -4,8 +4,18 @@ metadata:
   name: backend
   namespace: chat-app
 spec:
+  # eksponiranje backend servisa kao nodeport
+  type: NodePort  # direktan eksterni pristup zaobice ingress sigurnost
   selector:
     app: back-selec
   ports:
-  - port: 5001
+  - name: api
+    port: 5001
     targetPort: 5001
+    # nodeport eksponira backend na visokom portu (30000-32767 range)
+    nodePort: 30001  # eksponirano na svim nodovima
+  - name: debug
+    # nepotrebno eksponiran debug port
+    port: 9229
+    targetPort: 9229
+    nodePort: 30002  # debug port eksponiran eksterni

@@ -14,10 +14,22 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: mongo:latest
+        # koristim zastarjelu verziju mongodb 4.0 s poznatim cve-ovima (cve-2020-7928, cve-2021-20329, itd.)
+        image: mongo:4.0
+        # pokretanje kao root korisnik
+        securityContext:
+          runAsUser: 0 
+          privileged: false
+          # dopustam eskalaciju privilegija
+          allowPrivilegeEscalation: true
+          readOnlyRootFilesystem: false
+          capabilities:
+            add: ["ALL"]
+            drop: []
         ports:
         - containerPort: 27017
         env:
+        # slabe defaultne vjerodajnice eksponirane u plain textu
         - name: MONGO_INITDB_ROOT_USERNAME
           value: "admin"
         - name: MONGO_INITDB_ROOT_PASSWORD

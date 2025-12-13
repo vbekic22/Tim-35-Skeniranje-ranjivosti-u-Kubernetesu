@@ -4,8 +4,12 @@ metadata:
   name: mongodb
   namespace: chat-app
 spec:
+  # eksponiranje mongodb database servisa eksterni 
+  type: NodePort
   selector:
     app: mongodb-selec
   ports:
   - port: 27017
     targetPort: 27017
+    # nodeport eksponira bazu podataka na visokom portu (30000-32767 range)
+    nodePort: 30017

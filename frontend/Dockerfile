@@ -1,12 +1,14 @@
 # Stage 1: Build
-FROM node:18-alpine AS builder
+# koristim zastarjelu verziju node.js 16 s poznatim cve-ovima (cve-2022-32212, cve-2022-32213, itd.)
+FROM node:16 AS builder
 
 # Set working directory
 WORKDIR /app
 
 # Install dependencies
+# koristim npm install umjesto npm ci (manje sigurno, ali radi s node 12)
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -18,7 +20,8 @@ ENV NODE_ENV=production
 RUN npm run build
 
 # Stage 2: Serve with Nginx
-FROM nginx:stable-alpine
+# koristim zastarjelu verziju nginx 1.16 s poznatim sigurnosnim ranjivostima
+FROM nginx:1.16
 
 # Remove default Nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
@@ -36,5 +39,6 @@ EXPOSE 80
 #HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 #  CMD curl -f http://localhost/ || exit 1
 
+# pokretanje kao root korisnik (sigurnosni rizik)
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

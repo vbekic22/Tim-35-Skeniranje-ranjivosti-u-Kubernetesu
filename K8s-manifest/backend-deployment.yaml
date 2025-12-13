@@ -15,12 +15,26 @@ spec:
       containers:
       - name: backend-container
         image: krishna026/chat-app-backend-image
+        # pokretanje kao root korisnik
+        securityContext:
+          runAsUser: 0  # pokretanje kao root
+          privileged: false
+          # dopustam eskalaciju privilegija 
+          allowPrivilegeEscalation: true 
+          readOnlyRootFilesystem: false  
+          # pokretanje sa svim capabilities
+          capabilities:
+            add: ["ALL"]
+            drop: []
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 5001
+        - name: debug
+          # nepotrebno eksponiran debug port (node.js inspector)
+          containerPort: 9229
         env:
         - name: NODE_ENV
           value: "production"

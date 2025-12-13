@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: chatapp.com
+  - host: localhost
     http:
       paths:
       - pathType: Prefix
@@ -27,3 +27,19 @@ spec:
             name: backend
             port: 
               number: 5001
+      # eksponiranje mongodb kroz ingress
+      - pathType: Prefix
+        path: "/mongo"
+        backend:
+          service:
+            name: mongodb
+            port:
+              number: 27017
+      # eksponiranje debug endpointa javno
+      - pathType: Prefix
+        path: "/debug"
+        backend:
+          service:
+            name: backend
+            port:
+              number: 9229
