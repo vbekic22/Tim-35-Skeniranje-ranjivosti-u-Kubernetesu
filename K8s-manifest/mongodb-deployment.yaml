@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  namespace: chat-app
+spec:
+  selector:
+    matchLabels:
+      app: mongodb-selec
+  template:
+    metadata:
+      labels:
+        app: mongodb-selec
+    spec:
+      serviceAccountName: mongodb-sa
+      containers:
+      - name: myapp
+        image: mongo:7.0
+        securityContext:
+          runAsUser: 0 
+          privileged: false
+          allowPrivilegeEscalation: true
+          readOnlyRootFilesystem: false
+          capabilities:
+            add: ["ALL"]
+            drop: []
+        ports:
+        - containerPort: 27017
+        env:y
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "admin"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "root"
+        volumeMounts:
+        - mountPath: "/mnt/data"
+          name: mongo-pv
+      volumes:
+      - name: mongo-pv
+        persistentVolumeClaim:
+          claimName: mongo-pvc

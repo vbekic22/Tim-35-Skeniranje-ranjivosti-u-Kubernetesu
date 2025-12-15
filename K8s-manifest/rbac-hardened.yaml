@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend-sa
+  namespace: chat-app
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend-sa
+  namespace: chat-app
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mongodb-sa
+  namespace: chat-app
+
+---
+
+# Backend aplikacija ne treba upravljati resursima u klasteru, samo čitati vlastite tajne (JWT, DB URL)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: backend-role
+  namespace: chat-app
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: backend-role-binding
+  namespace: chat-app
+subjects:
+  - kind: ServiceAccount
+    name: backend-sa
+    namespace: chat-app
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: backend-role
+
+---
+
+# Frontend container ne pristupa Kubernetes API-ju → nema dodatnih privilegija, samo vlastiti service account (bez Role-a)
+
+---
+
+# MongoDB pod ne komunicira s Kubernetes API-jem → samo zaseban service account (bez dodatnog RBAC-a)
+
+
