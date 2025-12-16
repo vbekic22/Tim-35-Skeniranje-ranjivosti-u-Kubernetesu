@@ -15,13 +15,15 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+        runAsNonRoot: true
+        runAsUser: 101
       serviceAccountName: frontend-sa
       containers:
       - name: frontend-container
         image: krishna026/chat-app-frontend-image
         securityContext:
           runAsNonRoot: true
-          runAsUser: 1000  
+          runAsUser: 101
           privileged: false
           allowPrivilegeEscalation: false 
           readOnlyRootFilesystem: true  

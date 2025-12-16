@@ -15,6 +15,9 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+        runAsNonRoot: true
+        runAsUser: 999
+        fsGroup: 999
       serviceAccountName: mongodb-sa
       containers:
       - name: myapp
