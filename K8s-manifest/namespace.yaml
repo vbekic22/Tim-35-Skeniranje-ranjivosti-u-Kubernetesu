@@ -2,4 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: chat-app
-  # nema primijenjenih pod security standards

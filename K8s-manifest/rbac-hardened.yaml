@@ -22,7 +22,6 @@ metadata:
 
 ---
 
-# Backend aplikacija ne treba upravljati resursima u klasteru, samo čitati vlastite tajne (JWT, DB URL)
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -50,11 +49,3 @@ roleRef:
   name: backend-role
 
 ---
-
-# Frontend container ne pristupa Kubernetes API-ju → nema dodatnih privilegija, samo vlastiti service account (bez Role-a)
-
----
-
-# MongoDB pod ne komunicira s Kubernetes API-jem → samo zaseban service account (bez dodatnog RBAC-a)
-
-

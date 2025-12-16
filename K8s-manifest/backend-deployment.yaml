@@ -24,7 +24,7 @@ spec:
           runAsUser: 1000
           privileged: false
           allowPrivilegeEscalation: false 
-          readOnlyRootFilesystem: true  
+          readOnlyRootFilesystem: false  
           capabilities:
             drop: ["ALL"]
         resources:
@@ -33,9 +33,6 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5001
-        - name: debug
-          # nepotrebno eksponiran debug port
-          containerPort: 9229
         env:
         - name: NODE_ENV
           value: "production"

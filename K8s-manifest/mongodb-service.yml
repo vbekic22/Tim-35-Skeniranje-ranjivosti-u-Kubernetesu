@@ -4,10 +4,10 @@ metadata:
   name: mongodb
   namespace: chat-app
 spec:
-  type: NodePort
+  type: ClusterIP 
   selector:
     app: mongodb-selec
   ports:
   - port: 27017
     targetPort: 27017
-    nodePort: 30017
+

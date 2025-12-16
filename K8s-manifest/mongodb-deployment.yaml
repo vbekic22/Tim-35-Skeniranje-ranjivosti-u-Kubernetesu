@@ -27,7 +27,7 @@ spec:
           runAsUser: 999
           privileged: false
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
           capabilities:
             drop: ["ALL"]
         ports:

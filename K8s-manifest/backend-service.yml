@@ -12,7 +12,3 @@ spec:
     port: 5001
     targetPort: 5001
     nodePort: 30001
-  - name: debug
-    port: 9229
-    targetPort: 9229
-    nodePort: 30002

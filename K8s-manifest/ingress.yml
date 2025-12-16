@@ -27,17 +27,3 @@ spec:
             name: backend
             port: 
               number: 5001
-      - pathType: Prefix
-        path: "/mongo"
-        backend:
-          service:
-            name: mongodb
-            port:
-              number: 27017
-      - pathType: Prefix
-        path: "/debug"
-        backend:
-          service:
-            name: backend
-            port:
-              number: 9229
