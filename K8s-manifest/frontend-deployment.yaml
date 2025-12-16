@@ -17,6 +17,7 @@ spec:
           type: RuntimeDefault
         runAsNonRoot: true
         runAsUser: 101
+        fsGroup: 101
       serviceAccountName: frontend-sa
       containers:
       - name: frontend-container
@@ -26,7 +27,7 @@ spec:
           runAsUser: 101
           privileged: false
           allowPrivilegeEscalation: false 
-          readOnlyRootFilesystem: true  
+          readOnlyRootFilesystem: false  
           capabilities:
             drop: ["ALL"] 
         resources:
@@ -38,3 +39,13 @@ spec:
         env:
         - name: NODE_ENV
           value: "production"
+        volumeMounts:
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
+        - name: nginx-runtime
+          mountPath: /var/run
+      volumes:
+      - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-runtime
+        emptyDir: {}
