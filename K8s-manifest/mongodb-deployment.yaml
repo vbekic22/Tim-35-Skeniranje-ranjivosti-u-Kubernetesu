@@ -12,21 +12,24 @@ spec:
       labels:
         app: mongodb-selec
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: mongodb-sa
       containers:
       - name: myapp
         image: mongo:7.0
         securityContext:
-          runAsUser: 0 
+          runAsNonRoot: true
+          runAsUser: 999
           privileged: false
-          allowPrivilegeEscalation: true
-          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           capabilities:
-            add: ["ALL"]
-            drop: []
+            drop: ["ALL"]
         ports:
         - containerPort: 27017
-        env:y
+        env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: "admin"
         - name: MONGO_INITDB_ROOT_PASSWORD

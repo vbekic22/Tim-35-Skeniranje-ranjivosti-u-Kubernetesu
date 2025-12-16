@@ -12,18 +12,21 @@ spec:
       labels:
         app: frontend-selec
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: frontend-sa
       containers:
       - name: frontend-container
         image: krishna026/chat-app-frontend-image
         securityContext:
-          runAsUser: 0  
+          runAsNonRoot: true
+          runAsUser: 1000  
           privileged: false
-          allowPrivilegeEscalation: true 
-          readOnlyRootFilesystem: false  
+          allowPrivilegeEscalation: false 
+          readOnlyRootFilesystem: true  
           capabilities:
-            add: ["ALL"]  
-            drop: [] 
+            drop: ["ALL"] 
         resources:
           limits:
             memory: "128Mi"
